@@ -5,7 +5,7 @@ CREATE SEQUENCE authors_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 92233720368547758
 
 
 CREATE TABLE "authors"(
-    "id" bigint  DEFAULT nextval('author_id_seq') NOT NULL,
+    "id" bigint  DEFAULT nextval('authors_id_seq') NOT NULL,
     "name" text,
     "age" int,
     CONSTRAINT "authors_pk" PRIMARY KEY("id")
