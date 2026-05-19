@@ -4,6 +4,7 @@ import com.bookstore.library.api.DAO.impl.AuthorDaoimpl;
 import com.bookstore.library.api.domain.Authors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -43,7 +44,9 @@ public class AurthorDaoimplTest {
         underTest.findOne(1L);
 
         verify(jdbcTemplate).query(//since we need only one author returned, we use LIMIT
-                "SELECT id, name, age FROM authors where id = ? LIMIT 1", any(RowMapper.class), eq(1L)
+                eq("SELECT id, name, age FROM authors where id = ? LIMIT 1"),
+                ArgumentMatchers.<AuthorDaoimpl.AuthorRowMapper>any(),
+                eq(1L)
 
         );
     }
