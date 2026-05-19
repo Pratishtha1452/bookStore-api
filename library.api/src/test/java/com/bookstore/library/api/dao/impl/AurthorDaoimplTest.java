@@ -1,4 +1,4 @@
-package com.bookstore.library.api.dao;
+package com.bookstore.library.api.dao.impl;
 
 import com.bookstore.library.api.DAO.impl.AuthorDaoimpl;
 import com.bookstore.library.api.domain.Authors;
@@ -8,7 +8,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -33,6 +35,16 @@ public class AurthorDaoimplTest {
         verify(jdbcTemplate).update(
                 "INSERT into authors(id, name, age) VALUES(?, ?, ?)",
                 1L, "Abegale rose", 20
+        );
+    }
+
+    @Test
+    public void testThatFindOneGeneratesTheCorrectSql(){
+        underTest.findOne(1L);
+
+        verify(jdbcTemplate).query(//since we need only one author returned, we use LIMIT
+                "SELECT id, name, age FROM authors where id = ? LIMIT 1", any(RowMapper.class), eq(1L)
+
         );
     }
 }
