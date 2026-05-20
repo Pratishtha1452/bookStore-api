@@ -1,6 +1,7 @@
 package com.bookstore.library.api.dao.impl;
 
 import com.bookstore.library.api.DAO.impl.AuthorDaoimpl;
+import com.bookstore.library.api.TestDataUtil;
 import com.bookstore.library.api.domain.Authors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -26,11 +26,7 @@ public class AurthorDaoimplTest {
 
     @Test
     public void testThatCreateAuthorGeneratesCorrectSql(){
-        Authors authors = Authors.builder()
-        .id(1L)
-        .name("Abegale rose")
-        .age(20)
-        .build();
+        Authors authors = TestDataUtil.createTestAuthor();
         underTest.create(authors);
 
         verify(jdbcTemplate).update(
