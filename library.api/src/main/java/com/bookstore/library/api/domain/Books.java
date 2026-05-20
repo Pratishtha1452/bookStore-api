@@ -13,5 +13,5 @@ public class Books {
 
     private String isbn;
     private String title;
-    private Long authorid;
+    private Long author_id;
 }
