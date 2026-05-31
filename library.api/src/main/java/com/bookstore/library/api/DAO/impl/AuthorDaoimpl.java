@@ -50,6 +50,14 @@ public class AuthorDaoimpl implements AuthorDao {
         );
     }
 
+    @Override
+    public void delete(long id) {
+        jdbcTemplate.update(
+                "DELETE FROM Authors WHERE id = ?",
+                id
+        );
+    }
+
     public static class AuthorRowMapper implements RowMapper<Authors>{
 
         @Override
@@ -60,5 +68,6 @@ public class AuthorDaoimpl implements AuthorDao {
                     .age(rs.getInt("age"))
                     .build();
         }
+
     }
 }

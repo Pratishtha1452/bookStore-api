@@ -66,4 +66,14 @@ public class AurthorDaoimplTest {
                 1L, "Abegale rose", 20, 1L
         );
     }
+
+    @Test
+    public void testThatDeleteGeneratesTheCorrectSQL(){
+        underTest.delete(1L);
+
+        verify(jdbcTemplate).update(
+                "DELETE FROM Authors WHERE id = ?",
+                1L
+        );
+    }
 }
