@@ -47,6 +47,11 @@ public class BookDaoimplTest {
 
     @Test
     public void findManyThatGeneratesTheCorrectSQL(){
+        booktest.find();
 
+        verify(jdbcTemplate).query(
+                eq("SELECT isbn, title, author_id FROM Books"),
+                ArgumentMatchers.<BookDaoimpl.BookRowMapper>any()
+        );
     }
 }

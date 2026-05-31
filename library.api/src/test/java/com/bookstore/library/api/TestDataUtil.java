@@ -17,6 +17,23 @@ public final class TestDataUtil {
                 .build();
     }
 
+    public static Authors createTestAuthorB() {
+        return Authors.builder()
+                .id(2L)
+                .name("Rosey")
+                .age(24)
+                .build();
+    }
+
+    public static Authors createTestAuthorC() {
+        return Authors.builder()
+                .id(3L)
+                .name("Merlin")
+                .age(120)
+                .build();
+    }
+
+
 
     public static Books createTestBooks() {
         return Books.builder()

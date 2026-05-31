@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,5 +36,19 @@ public class AuthorDaoImplIntegrationTest {
         Optional<Authors> result = underTest.findOne(authors.getId());
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(authors);
+    }
+
+    @Test
+    public void testThatMultipleAuthorsCanBeCreeatedAdRecalled(){
+        Authors author = TestDataUtil.createTestAuthor();
+        underTest.create(author);
+        Authors authorB = TestDataUtil.createTestAuthorB();
+        underTest.create(authorB);
+        Authors authorC = TestDataUtil.createTestAuthorC();
+        underTest.create(authorC);
+
+        List<Authors> result = underTest.find();
+        assertThat(result).hasSize(3)
+        .containsExactly(author, authorB, authorC);
     }
 }

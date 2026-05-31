@@ -35,6 +35,14 @@ public class BookDaoimpl implements BookDao {
         return bookresult.stream().findFirst();
     }
 
+    @Override
+    public List<Books> find() {
+        return jdbcTemplate.query(
+                "SELECT isbn, title, author_id FROM Books",
+                new BookRowMapper()
+        );
+    }
+
     public static class BookRowMapper implements RowMapper<Books>{
 
         @Override
