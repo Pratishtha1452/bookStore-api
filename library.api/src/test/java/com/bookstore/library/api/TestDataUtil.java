@@ -42,4 +42,20 @@ public final class TestDataUtil {
                 .author_id(1L)
                 .build();
     }
+
+    public static Books createTestBooksB() {
+        return Books.builder()
+                .isbn("C3D4")
+                .title("HELLO!")
+                .author_id(2L)
+                .build();
+    }
+
+    public static Books createTestBooksC() {
+        return Books.builder()
+                .isbn("E5F6")
+                .title("Merlin's Beard")
+                .author_id(3L)
+                .build();
+    }
 }
