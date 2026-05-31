@@ -2,6 +2,7 @@ package com.bookstore.library.api.dao.impl;
 
 import com.bookstore.library.api.DAO.impl.BookDaoimpl;
 import com.bookstore.library.api.TestDataUtil;
+import com.bookstore.library.api.domain.Authors;
 import com.bookstore.library.api.domain.Books;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,6 +53,18 @@ public class BookDaoimplTest {
         verify(jdbcTemplate).query(
                 eq("SELECT isbn, title, author_id FROM Books"),
                 ArgumentMatchers.<BookDaoimpl.BookRowMapper>any()
+        );
+    }
+
+    @Test
+    public void TestThatBooksCanBeUpdated(){
+        Books book = TestDataUtil.createTestBooks();
+        booktest.update(1L, book);
+
+        verify(jdbcTemplate).update(
+                "UPDATE Books set isbn = ?, title = ?, author_id = ? WHERE author_id = ?",
+                "A1B2", "Masque of Red Death", 1L, 1L
+
         );
     }
 }

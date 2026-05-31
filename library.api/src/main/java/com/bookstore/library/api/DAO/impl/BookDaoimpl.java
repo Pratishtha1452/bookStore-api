@@ -2,7 +2,6 @@ package com.bookstore.library.api.DAO.impl;
 
 import com.bookstore.library.api.DAO.BookDao;
 import com.bookstore.library.api.domain.Books;
-import org.jspecify.annotations.Nullable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -41,6 +40,15 @@ public class BookDaoimpl implements BookDao {
                 "SELECT isbn, title, author_id FROM Books",
                 new BookRowMapper()
         );
+    }
+
+    @Override
+    public void update(long author_id, Books book) {
+        jdbcTemplate.update(
+                "UPDATE Books set isbn = ?, title = ?, author_id = ? WHERE author_id = ?",
+                book.getIsbn(), book.getTitle(), book.getAuthor_id(), book.getAuthor_id()
+        );
+
     }
 
     public static class BookRowMapper implements RowMapper<Books>{
