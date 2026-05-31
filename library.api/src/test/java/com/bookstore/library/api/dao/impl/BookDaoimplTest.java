@@ -44,4 +44,9 @@ public class BookDaoimplTest {
                 eq("A1B2")
         );
     }
+
+    @Test
+    public void findManyThatGeneratesTheCorrectSQL(){
+
+    }
 }

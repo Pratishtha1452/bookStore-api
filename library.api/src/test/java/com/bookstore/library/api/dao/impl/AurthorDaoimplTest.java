@@ -46,4 +46,13 @@ public class AurthorDaoimplTest {
 
         );
     }
+    @Test
+    public void findManyThatGeneratesTheCorrectSQL(){
+        underTest.find();
+
+        verify(jdbcTemplate).query(
+                eq("SELECT id, name,age FROM AUTHORS"),
+                ArgumentMatchers.<AuthorDaoimpl.AuthorRowMapper>any()
+        );
+    }
 }
