@@ -51,7 +51,7 @@ public class AurthorDaoimplTest {
         underTest.find();
 
         verify(jdbcTemplate).query(
-                eq("SELECT id, name,age FROM AUTHORS"),
+                eq("SELECT id, name, age FROM AUTHORS"),
                 ArgumentMatchers.<AuthorDaoimpl.AuthorRowMapper>any()
         );
     }
