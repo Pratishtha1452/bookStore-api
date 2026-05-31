@@ -49,7 +49,7 @@ public class BookDaoImpIntegrationTest {
     }
 
     @Test
-    public void testThatMultipleAuthorsCanBeCreeatedAdRecalled(){
+    public void testThatMultipleBooksCanBeCreeatedAdRecalled(){
         Authors author = TestDataUtil.createTestAuthor();
         authorUnderTest.create(author);
         Authors authorB = TestDataUtil.createTestAuthorB();
@@ -69,5 +69,19 @@ public class BookDaoImpIntegrationTest {
         List<Books> result = bookUnderTest.find();
         assertThat(result).containsExactly(book, bookB, bookC)
                 .hasSize(3);
+    }
+
+    @Test
+    public void testThatBooksCanBeUpdated(){
+        Authors authors = TestDataUtil.createTestAuthor();
+        authorUnderTest.create(authors);
+        Books books = TestDataUtil.createTestBooks();
+        bookUnderTest.create(books);
+
+        books.setTitle("UPDATED");
+        bookUnderTest.update(books.getAuthor_id(), books);
+        Optional<Books> result = bookUnderTest.findOne(books.getIsbn());
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(books);
     }
 }
