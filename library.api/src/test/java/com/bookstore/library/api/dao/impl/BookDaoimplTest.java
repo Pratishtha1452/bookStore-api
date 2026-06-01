@@ -67,4 +67,16 @@ public class BookDaoimplTest {
 
         );
     }
+
+    @Test
+    public void TestThatBooksCanBeDeleted(){
+        Books books = TestDataUtil.createTestBooks();
+        booktest.delete(1L);
+
+        verify(jdbcTemplate).update(
+                "DELETE FROM Books WHERE author_id = ?",
+                1L
+        );
+
+    }
 }
