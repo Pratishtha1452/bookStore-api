@@ -70,19 +70,19 @@ public class BookRepositoryIntegrationTest {
                 .hasSize(3);
     }
 
-//    @Test
-//    public void testThatBooksCanBeUpdated(){
-//        Authors authors = TestDataUtil.createTestAuthor();
-//        authorUnderTest.create(authors);
-//        Books books = TestDataUtil.createTestBooks();
-//        bookUnderTest.create(books);
-//
-//        books.setTitle("UPDATED");
-//        bookUnderTest.update(books.getAuthor_id(), books);
-//        Optional<Books> result = bookUnderTest.findOne(books.getIsbn());
-//        assertThat(result).isPresent();
-//        assertThat(result.get()).isEqualTo(books);
-//    }
+    @Test
+    public void testThatBooksCanBeUpdated(){
+        Authors authors = TestDataUtil.createTestAuthor();
+        authorUnderTest.save(authors);
+        Books books = TestDataUtil.createTestBooks(authors);
+        bookUnderTest.save(books);
+
+        books.setTitle("UPDATED");
+        bookUnderTest.save(books);
+        Optional<Books> result = bookUnderTest.findById(books.getIsbn());
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(books);
+    }
 //
 //    @Test
 //    public void testThatBooksCanBeDeleted(){
