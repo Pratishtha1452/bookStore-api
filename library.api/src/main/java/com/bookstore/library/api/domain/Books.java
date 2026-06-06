@@ -1,5 +1,6 @@
 package com.bookstore.library.api.domain;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,9 +10,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
+@Table(name ="book")
 public class Books {
 
+    @Id
     private String isbn;
+
     private String title;
-    private Long author_id;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_id")
+    private Authors author;//private Long author_id;
 }
