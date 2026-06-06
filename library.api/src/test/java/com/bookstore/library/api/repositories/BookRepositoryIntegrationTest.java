@@ -83,18 +83,18 @@ public class BookRepositoryIntegrationTest {
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(books);
     }
-//
-//    @Test
-//    public void testThatBooksCanBeDeleted(){
-//        Authors authors = TestDataUtil.createTestAuthor();
-//        authorUnderTest.create(authors);
-//        Books books = TestDataUtil.createTestBooks();
-//        bookUnderTest.create(books);
-//
-//        bookUnderTest.delete(books.getAuthor_id());
-//        Optional<Books> result = bookUnderTest.findOne(books.getIsbn());
-//        assertThat(result).isEmpty();
-//    }
-//
+
+    @Test
+    public void testThatBooksCanBeDeleted(){
+        Authors authors = TestDataUtil.createTestAuthor();
+        authorUnderTest.save(authors);
+        Books books = TestDataUtil.createTestBooks(authors);
+        bookUnderTest.save(books);
+
+        bookUnderTest.deleteById(books.getIsbn());
+        Optional<Books> result = bookUnderTest.findById(books.getIsbn());
+        assertThat(result).isEmpty();
+    }
+
 
 }
