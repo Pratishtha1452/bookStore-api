@@ -4,6 +4,8 @@ import com.bookstore.library.api.domain.entities.AuthorsEntity;
 import com.bookstore.library.api.domain.dto.AuthorDto;
 import com.bookstore.library.api.mappers.Mapper;
 import com.bookstore.library.api.services.AuthorService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,9 +24,9 @@ public class AuthorController {
 
     //CREATE
     @PostMapping(path = "/authors")
-    public AuthorDto createAuthor(@RequestBody AuthorDto authors){
+    public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorDto authors){
         AuthorsEntity authorsEntity = authorMapper.mapFrom(authors);
         AuthorsEntity savedAuthorsEntity = authorService.createAuthor(authorsEntity);
-        return authorMapper.mapTo(savedAuthorsEntity);
+        return new ResponseEntity<>(authorMapper.mapTo(savedAuthorsEntity), HttpStatus.CREATED);
     }
 }
