@@ -1,4 +1,4 @@
-package com.bookstore.library.api.domain;
+package com.bookstore.library.api.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +10,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "authors")
-public class Authors {
+public class AuthorsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_id_seq")

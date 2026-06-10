@@ -1,8 +1,8 @@
 package com.bookstore.library.api.services;
 
-import com.bookstore.library.api.domain.Authors;
+import com.bookstore.library.api.domain.entities.AuthorsEntity;
 
 public interface AuthorService {
 
-    Authors createAuthor(Authors authors);
+    AuthorsEntity createAuthor(AuthorsEntity authorsEntity);
 }

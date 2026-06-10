@@ -1,4 +1,4 @@
-package com.bookstore.library.api.domain;
+package com.bookstore.library.api.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name ="books")
-public class Books {
+public class BooksEntity {
 
     @Id
     private String isbn;
@@ -21,5 +21,5 @@ public class Books {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
-    private Authors author;//private Long author_id;
+    private AuthorsEntity author;//private Long author_id;
 }
