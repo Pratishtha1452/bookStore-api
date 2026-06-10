@@ -38,7 +38,7 @@ public class AuthorRepositoryIntegrationTest {
     }
 
     @Test
-    public void testThatMultipleAuthorsCanBeCreeatedAdRecalled(){
+    public void testThatMultipleAuthorsCanBeCreatedAdRecalled(){
         Authors author = TestDataUtil.createTestAuthor();
         underTest.save(author);
         Authors authorB = TestDataUtil.createTestAuthorB();
@@ -52,7 +52,7 @@ public class AuthorRepositoryIntegrationTest {
     }
 
     @Test
-    public void testThatAuthorCanbeUpdated(){
+    public void testThatAuthorCanBeUpdated(){
         Authors author = TestDataUtil.createTestAuthor();
         underTest.save(author);
         author.setName("UPDATED");
