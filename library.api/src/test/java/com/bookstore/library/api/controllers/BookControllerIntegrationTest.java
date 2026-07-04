@@ -14,6 +14,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -63,5 +65,13 @@ public class BookControllerIntegrationTest {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.title").value(booksEntity.getTitle())
         );
+    }
+
+    @Test
+    public void testThatListBooksReturnsHttpsStatus200Ok() throws Exception {
+        mockMvc.perform(
+                get("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
