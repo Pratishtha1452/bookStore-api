@@ -97,7 +97,7 @@ public class AuthorControllerIntegrationTest {
     }
 
     @Test
-    public void testThatGetAuthorsReturnsHttpsStatus200WhenAuthorexists() throws Exception {
+    public void testThatGetAuthorsReturnsHttpsStatus200WhenAuthorExists() throws Exception {
         AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
         authorService.createAuthor(authorsEntity);
 
@@ -105,6 +105,16 @@ public class AuthorControllerIntegrationTest {
                 get("/authors/" + authorsEntity.getId())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatGetAuthorsReturnsHttpsStatus404WhenAuthorDoesNotExists() throws Exception {
+
+        mockMvc.perform(
+                get("/authors/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isNotFound()
         );
     }
 
