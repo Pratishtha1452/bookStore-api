@@ -67,5 +67,12 @@ public class AuthorControllerIntegrationTest {
         );
     }
 
-
+    @Test
+    public void testThatListAuthorsReturnsHttpsStatus200() throws Exception {
+        mockMvc.perform(
+                get("/authors")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk()
+        );
+    }
 }
