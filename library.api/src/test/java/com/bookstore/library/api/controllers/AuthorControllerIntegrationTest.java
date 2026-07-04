@@ -2,6 +2,7 @@ package com.bookstore.library.api.controllers;
 
 import com.bookstore.library.api.TestDataUtil;
 import com.bookstore.library.api.domain.entities.AuthorsEntity;
+import com.bookstore.library.api.services.AuthorService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Disabled;
@@ -25,14 +26,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc
 public class AuthorControllerIntegrationTest {
 
+    private AuthorService authorService;
+
     private MockMvc mockMvc;
 
     private ObjectMapper objectmapper;
 
     @Autowired
-    public AuthorControllerIntegrationTest(MockMvc mockMvc) {
+    public AuthorControllerIntegrationTest(MockMvc mockMvc, ObjectMapper objectmapper, AuthorService authorService) {
         this.mockMvc = mockMvc;
-        this.objectmapper = new ObjectMapper();
+        this.objectmapper = objectmapper;
+        this.authorService = authorService;
     }
 
     @Test
@@ -73,6 +77,22 @@ public class AuthorControllerIntegrationTest {
                 get("/authors")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatListAuthorsSuccessfullyReturnsListOfAuthors() throws Exception {
+        AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
+        authorService.createAuthor(authorsEntity);
+        mockMvc.perform(
+                get("/authors")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].id").isNumber()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].name").value("Abegale rose")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].age").value("20")
         );
     }
 }
