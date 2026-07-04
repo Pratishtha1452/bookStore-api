@@ -38,7 +38,7 @@ public class AuthorController {
     @GetMapping(path = "/authors")
     public List<AuthorDto> listOfAuthors(){
         List<AuthorsEntity> authors = authorService.findAll();
-        //Modern JAVA...
+        //Modern JAVA...since we are using devtiro's approach which includes that the method returns authorEntitiy instead of Dtos
         return authors.stream()
                 .map(authorMapper::mapTo)
                 .collect(Collectors.toList());
