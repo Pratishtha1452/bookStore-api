@@ -95,4 +95,17 @@ public class AuthorControllerIntegrationTest {
                 MockMvcResultMatchers.jsonPath("$[0].age").value("20")
         );
     }
+
+    @Test
+    public void testThatGetAuthorsReturnsHttpsStatus200WhenAuthorexists() throws Exception {
+        AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
+        authorService.createAuthor(authorsEntity);
+
+        mockMvc.perform(
+                get("/authors/" + authorsEntity.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk()
+        );
+    }
+
 }
