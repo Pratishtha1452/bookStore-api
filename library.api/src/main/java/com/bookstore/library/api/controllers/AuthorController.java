@@ -6,12 +6,10 @@ import com.bookstore.library.api.mappers.Mapper;
 import com.bookstore.library.api.services.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -44,4 +42,13 @@ public class AuthorController {
                 .collect(Collectors.toList());
     }
 
+    //READ ONE
+    @GetMapping(path = "/authors/{id}")
+    public ResponseEntity<AuthorDto>  getAuthor(@PathVariable("id") Long id){
+        Optional<AuthorsEntity> foundAuthor = authorService.findOne(id);
+        return foundAuthor.map(authorsEntity -> {
+                AuthorDto authorDto = authorMapper.mapTo(authorsEntity);
+                return new ResponseEntity<>(authorDto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }
