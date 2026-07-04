@@ -3,6 +3,7 @@ package com.bookstore.library.api.controllers;
 import com.bookstore.library.api.TestDataUtil;
 import com.bookstore.library.api.domain.entities.AuthorsEntity;
 import com.bookstore.library.api.domain.entities.BooksEntity;
+import com.bookstore.library.api.services.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,11 +27,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 public class BookControllerIntegrationTest {
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
+    private BookService bookService;
 
     @Autowired
-    public BookControllerIntegrationTest(MockMvc mockMvc, ObjectMapper objectMapper) {
+    public BookControllerIntegrationTest(MockMvc mockMvc, ObjectMapper objectMapper, BookService bookService) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
+        this.bookService = bookService;
     }
 
     @Test
@@ -73,5 +76,21 @@ public class BookControllerIntegrationTest {
                 get("/books")
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatListBooksSuccessfullyReturnsListOfBooks() throws Exception {
+        AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
+        BooksEntity booksEntity = TestDataUtil.createTestBooks(authorsEntity);
+        bookService.createBook(booksEntity.getIsbn(), booksEntity);
+
+        mockMvc.perform(
+                get("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].isbn").value(booksEntity.getIsbn())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].title").value(booksEntity.getTitle())
+        );
     }
 }
