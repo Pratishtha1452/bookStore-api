@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
@@ -41,12 +43,30 @@ public class BookControllerIntegrationTest {
         BooksEntity booksEntity = TestDataUtil.createTestBooks(authorsEntity);
         String json = objectMapper.writeValueAsString(booksEntity);
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/books/" + booksEntity.getIsbn())
+                put("/books/" + booksEntity.getIsbn())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
         ).andDo(print()
         ).andExpect(
                 MockMvcResultMatchers.status().isCreated()
+        );
+    }
+
+    @Test
+    public void testThatCreateBooksSuccessfullyReturnsSavedBook() throws Exception {
+        AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
+        authorsEntity.setId(null);
+        BooksEntity booksEntity = TestDataUtil.createTestBooks(authorsEntity);
+        String json = objectMapper.writeValueAsString(booksEntity);
+
+        mockMvc.perform(
+                put("/books/" + booksEntity.getIsbn())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.isbn").value(booksEntity.getIsbn())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.title").value(booksEntity.getTitle())
         );
     }
 }
