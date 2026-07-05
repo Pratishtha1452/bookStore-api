@@ -132,4 +132,17 @@ public class AuthorControllerIntegrationTest {
         );
     }
 
+    @Test
+    public void testThatPutAuthorsReturnsHttpsStatus404WhenAuthorDoesNotExists() throws Exception {
+        AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
+        authorsEntity.setId(null);
+        String json = objectmapper.writeValueAsString(authorsEntity);
+
+        mockMvc.perform(
+                put("/authors/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+        ).andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
 }
