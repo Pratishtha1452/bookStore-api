@@ -3,9 +3,7 @@ package com.bookstore.library.api.controllers;
 import com.bookstore.library.api.TestDataUtil;
 import com.bookstore.library.api.domain.entities.AuthorsEntity;
 import com.bookstore.library.api.services.AuthorService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -83,7 +80,7 @@ public class AuthorControllerIntegrationTest {
     @Test
     public void testThatListAuthorsSuccessfullyReturnsListOfAuthors() throws Exception {
         AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
-        authorService.createAuthor(authorsEntity);
+        authorService.saveAuthor(authorsEntity);
         mockMvc.perform(
                 get("/authors")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -99,7 +96,7 @@ public class AuthorControllerIntegrationTest {
     @Test
     public void testThatGetAuthorsReturnsHttpsStatus200WhenAuthorExists() throws Exception {
         AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
-        authorService.createAuthor(authorsEntity);
+        authorService.saveAuthor(authorsEntity);
 
         mockMvc.perform(
                 get("/authors/" + authorsEntity.getId())
@@ -121,7 +118,7 @@ public class AuthorControllerIntegrationTest {
     @Test
     public void testThatGetAuthorsReturnsAuthorWhenAuthorExists() throws Exception {
         AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
-        authorService.createAuthor(authorsEntity);
+        authorService.saveAuthor(authorsEntity);
 
         mockMvc.perform(
                 get("/authors/" + authorsEntity.getId())
