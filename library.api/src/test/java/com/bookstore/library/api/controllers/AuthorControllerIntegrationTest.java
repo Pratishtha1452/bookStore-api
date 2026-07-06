@@ -159,6 +159,26 @@ public class AuthorControllerIntegrationTest {
         );
     }
 
+    @Test
+    public void testThatPutAuhthorsUpdatesExistingAuthor() throws Exception {
+        AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
+        AuthorsEntity savedAuthor = authorService.saveAuthor(authorsEntity);
 
+        AuthorsEntity authorsEntity2 = TestDataUtil.createTestAuthorB();
+        authorsEntity2.setId(authorsEntity.getId());
+        String json2 = objectmapper.writeValueAsString(authorsEntity2);
+
+        mockMvc.perform(
+                put("/authors/" + authorsEntity2.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json2)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.id").value(authorsEntity.getId())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value(authorsEntity2.getName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.age").value(authorsEntity2.getAge())
+        );
+    }
 
 }
