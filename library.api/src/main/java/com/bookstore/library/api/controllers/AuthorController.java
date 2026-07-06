@@ -63,6 +63,6 @@ public class AuthorController {
         AuthorsEntity authorsEntity = authorMapper.mapFrom(authorDto);
         AuthorsEntity savedAuthorEntity = authorService.saveAuthor(authorsEntity);
         AuthorDto savedAuthorDto = authorMapper.mapTo(savedAuthorEntity);
-        return new ResponseEntity<>(savedAuthorDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedAuthorDto, HttpStatus.OK);
     }
 }

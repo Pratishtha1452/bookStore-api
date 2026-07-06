@@ -3,6 +3,7 @@ package com.bookstore.library.api.controllers;
 import com.bookstore.library.api.TestDataUtil;
 import com.bookstore.library.api.domain.entities.AuthorsEntity;
 import com.bookstore.library.api.services.AuthorService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -144,5 +145,20 @@ public class AuthorControllerIntegrationTest {
                         .content(json)
         ).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
+
+    @Test
+    public void testThatPutAuthorsReturnsHttpsStatus200WhenAuthorExists() throws Exception {
+        AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
+        String json = objectmapper.writeValueAsString(authorsEntity);
+        authorService.saveAuthor(authorsEntity);
+        mockMvc.perform(
+                put("/authors/" + authorsEntity.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+        ).andExpect(MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+
 
 }
