@@ -18,7 +18,7 @@ public final class TestDataUtil {
 
     public static AuthorsEntity createTestAuthorB() {
         return AuthorsEntity.builder()
-                .name("Rosey")
+                .name("Fyodor")
                 .age(24)
                 .build();
     }
@@ -43,7 +43,7 @@ public final class TestDataUtil {
     public static BooksEntity createTestBooksB(final AuthorsEntity author) {
         return BooksEntity.builder()
                 .isbn("C3D4")
-                .title("HELLO!")
+                .title("Notes from the underground")
                 .author(author)
                 .build();
     }

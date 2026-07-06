@@ -37,20 +37,46 @@ public class BookControllerIntegrationTest {
     }
 
     @Test
-    public void testThatUpdateBooksSuccesfullyReturns201Created() throws Exception {
+    public void testThatCreateBooksSuccesfullyReturns201Created() throws Exception {
 
         BooksEntity booksEntity = TestDataUtil.createTestBooks(null);
+        String json = objectMapper.writeValueAsString(booksEntity);
+        mockMvc.perform(
+                put("/books/" + booksEntity.getIsbn())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+        ).andExpect(
+                MockMvcResultMatchers.status().isCreated()
+        );
+    }
+
+    @Test
+    public void testThatUpdateBooksSuccesfullyReturns200OK() throws Exception {
+
+        //book saved(og)
+        BooksEntity booksEntity = TestDataUtil.createTestBooks(null);
         BooksEntity savedBook = bookService.createUpdateBook(booksEntity.getIsbn(), booksEntity);
+
+        //book json to be passed - book values(new)
         BooksEntity booksEntity2 = TestDataUtil.createTestBooksB(null);
+        //set the id of the book object with new data as og id... so that it remains same
+        booksEntity2.setIsbn(booksEntity.getIsbn());
+
         String json2 = objectMapper.writeValueAsString(booksEntity2);
-        booksEntity.setIsbn(booksEntity2.getIsbn());
+
+        //pass the id that is to be there after updation in the path
         mockMvc.perform(
                 put("/books/" + booksEntity2.getIsbn())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json2)
-        ).andDo(print()
         ).andExpect(
-                MockMvcResultMatchers.status().isCreated()
+                MockMvcResultMatchers.status().isOk()
+                //the result isbn should be the same as og isbn... and should not be changed
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.isbn").value(booksEntity.getIsbn())
+        ).andExpect(
+                //the result title should be same as the book object whose json was provided
+                MockMvcResultMatchers.jsonPath("$.title").value(booksEntity2.getTitle())
         );
     }
 
