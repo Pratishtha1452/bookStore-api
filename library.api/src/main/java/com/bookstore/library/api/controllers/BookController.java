@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,13 +23,20 @@ public class BookController {
         this.bookMapper = bookMapper;
     }
 
-    //CREATE
+    //CREATE_OR_UPDATE
     @PutMapping(path = "/books/{isbn}")
-    public ResponseEntity<BookDto> createBook(@PathVariable(name = "isbn") String isbn, @RequestBody BookDto bookDto){
+    public ResponseEntity<BookDto> createUpdateBook(@PathVariable(name = "isbn") String isbn, @RequestBody BookDto bookDto){
         BooksEntity booksEntity = bookMapper.mapFrom(bookDto);
-        BooksEntity savedBook = bookService.createBook(isbn, booksEntity);
+        boolean bookExists = bookService.isExists(isbn);
+        BooksEntity savedBook = bookService.createUpdateBook(isbn, booksEntity);
         BookDto savedBookDto = bookMapper.mapTo(savedBook);
-        return new ResponseEntity<>(savedBookDto, HttpStatus.CREATED);
+        if(bookExists){
+            //update
+            return new ResponseEntity<>(savedBookDto, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(savedBookDto, HttpStatus.CREATED);
+        }
     }
 
     //FIND ALL
