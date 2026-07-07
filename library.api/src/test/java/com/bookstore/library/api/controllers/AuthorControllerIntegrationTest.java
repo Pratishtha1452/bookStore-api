@@ -200,4 +200,15 @@ public class AuthorControllerIntegrationTest {
         );
     }
 
+    @Test
+    public void testThatDeleteAuthorDeletesExistingAuthorAndReturnsHttpsStatus204No_Content() throws Exception{
+        AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
+        authorService.saveAuthor(authorsEntity);
+
+        mockMvc.perform(
+                delete("/authors/" + authorsEntity.getId())
+        ).andExpect(MockMvcResultMatchers.status().isNoContent()
+        );
+    }
+
 }
