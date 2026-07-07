@@ -173,6 +173,7 @@ public class BookControllerIntegrationTest {
                 patch("/books/" + booksEntity.getIsbn())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
+        ).andExpect(MockMvcResultMatchers.status().isOk()
         ).andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(booksEntity.getIsbn())
         ).andExpect(MockMvcResultMatchers.jsonPath("$.title").value(bookDto.getTitle())
         );
