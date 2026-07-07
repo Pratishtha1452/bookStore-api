@@ -1,6 +1,7 @@
 package com.bookstore.library.api.controllers;
 
 import com.bookstore.library.api.TestDataUtil;
+import com.bookstore.library.api.domain.dto.BookDto;
 import com.bookstore.library.api.domain.entities.AuthorsEntity;
 import com.bookstore.library.api.domain.entities.BooksEntity;
 import com.bookstore.library.api.services.BookService;
@@ -16,8 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
@@ -156,6 +156,25 @@ public class BookControllerIntegrationTest {
                 MockMvcResultMatchers.jsonPath("$.isbn").value(booksEntity.getIsbn())
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.title").value(booksEntity.getTitle())
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateExistingBookReturnsHttpsStatus2002OKAndUpdates() throws Exception {
+        BooksEntity booksEntity = TestDataUtil.createTestBooks(null);
+        bookService.createUpdateBook(booksEntity.getIsbn(), booksEntity);
+
+        BookDto bookDto = new BookDto();
+        bookDto.setTitle("The Bell Jar");
+
+        String json = objectMapper.writeValueAsString(bookDto);
+
+        mockMvc.perform(
+                patch("/books/" + booksEntity.getIsbn())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+        ).andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(booksEntity.getIsbn())
+        ).andExpect(MockMvcResultMatchers.jsonPath("$.title").value(bookDto.getTitle())
         );
     }
 

@@ -4,7 +4,6 @@ import com.bookstore.library.api.TestDataUtil;
 import com.bookstore.library.api.domain.dto.AuthorDto;
 import com.bookstore.library.api.domain.entities.AuthorsEntity;
 import com.bookstore.library.api.services.AuthorService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -183,7 +182,7 @@ public class AuthorControllerIntegrationTest {
     }
 
     @Test
-    public void testThatPartialUpdateExistingAuthorReturnsHttpsStatus200OOK() throws Exception {
+    public void testThatPartialUpdateExistingAuthorReturnsHttpsStatus200OOKAndUpdates() throws Exception {
         AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
         authorService.saveAuthor(authorsEntity);
 
