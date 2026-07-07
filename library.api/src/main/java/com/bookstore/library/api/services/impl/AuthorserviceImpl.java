@@ -1,5 +1,6 @@
 package com.bookstore.library.api.services.impl;
 
+import com.bookstore.library.api.domain.dto.AuthorDto;
 import com.bookstore.library.api.domain.entities.AuthorsEntity;
 import com.bookstore.library.api.repositories.AuthorRepository;
 import com.bookstore.library.api.services.AuthorService;
@@ -37,6 +38,23 @@ public class AuthorserviceImpl implements AuthorService{
     @Override
     public boolean isExists(Long id) {
         return authorRepository.existsById(id);
+    }
+
+    @Override
+    public AuthorsEntity partialUpdate(Long id, AuthorsEntity authorsEntity) {
+        authorsEntity.setId(id);
+
+        //find if author exists -> if yes (using map)grab the object and name it existingAuthor and run the code inside curly braces
+        return authorRepository.findById(id).map(existingAuthor ->{
+            //findById return an Optional since it either returns the object or null -> get the attribut
+            //if it is present set the value from the object
+            Optional.ofNullable(authorsEntity.getName()).ifPresent(existingAuthor::setName);
+            Optional.ofNullable(authorsEntity.getAge()).ifPresent(existingAuthor::setAge);
+            //after updation save it
+            return authorRepository.save(existingAuthor);
+
+            //just in case -> though not likely = return a runtime exception for when author does not exist
+        }).orElseThrow(() -> new RuntimeException("Author deos not exists"));
     }
 
 

@@ -1,5 +1,6 @@
 package com.bookstore.library.api.services;
 
+import com.bookstore.library.api.domain.dto.AuthorDto;
 import com.bookstore.library.api.domain.entities.AuthorsEntity;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface AuthorService {
     Optional<AuthorsEntity> findOne(Long id);
 
     boolean isExists(Long id);
+
+    AuthorsEntity partialUpdate(Long id, AuthorsEntity authorsEntity);
 }
