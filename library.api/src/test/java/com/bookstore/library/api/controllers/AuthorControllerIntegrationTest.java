@@ -1,6 +1,7 @@
 package com.bookstore.library.api.controllers;
 
 import com.bookstore.library.api.TestDataUtil;
+import com.bookstore.library.api.domain.dto.AuthorDto;
 import com.bookstore.library.api.domain.entities.AuthorsEntity;
 import com.bookstore.library.api.services.AuthorService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -178,6 +179,25 @@ public class AuthorControllerIntegrationTest {
                 MockMvcResultMatchers.jsonPath("$.name").value(authorsEntity2.getName())
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.age").value(authorsEntity2.getAge())
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateExistingAuthorReturnsHttpsStatus200OOK() throws Exception {
+        AuthorsEntity authorsEntity = TestDataUtil.createTestAuthor();
+        authorService.saveAuthor(authorsEntity);
+
+        AuthorDto authorDto = new AuthorDto();
+        authorDto.setName("UPDATED");
+        String json = objectmapper.writeValueAsString(authorDto);
+        mockMvc.perform(
+                patch("/authors/" + authorsEntity.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+        ).andExpect(MockMvcResultMatchers.status().isOk()
+        ).andExpect(MockMvcResultMatchers.jsonPath("$.id").value(authorsEntity.getId())
+        ).andExpect(MockMvcResultMatchers.jsonPath("$.name").value(authorDto.getName())
+        ).andExpect(MockMvcResultMatchers.jsonPath("$.age").value(authorsEntity.getAge())
         );
     }
 
