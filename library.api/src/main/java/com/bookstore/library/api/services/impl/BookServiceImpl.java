@@ -6,6 +6,7 @@ import com.bookstore.library.api.repositories.BookRepository;
 import com.bookstore.library.api.services.BookService;
 import org.springframework.stereotype.Service;
 
+import javax.management.RuntimeErrorException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,5 +40,16 @@ public class BookServiceImpl implements BookService {
     @Override
     public boolean isExists(String isbn) {
         return bookRepository.existsById(isbn);
+    }
+
+    @Override
+    public BooksEntity partialUpdate(String isbn, BooksEntity booksEntity) {
+        booksEntity.setIsbn(isbn);
+
+        return bookRepository.findById(isbn).map(existingBook -> {
+            Optional.ofNullable(booksEntity.getTitle()).ifPresent(existingBook::setTitle);
+
+            return bookRepository.save(booksEntity);
+        }).orElseThrow(() -> new RuntimeException("Book Not Found"));
     }
 }

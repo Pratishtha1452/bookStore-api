@@ -1,6 +1,8 @@
 package com.bookstore.library.api.controllers;
 
+import com.bookstore.library.api.domain.dto.AuthorDto;
 import com.bookstore.library.api.domain.dto.BookDto;
+import com.bookstore.library.api.domain.entities.AuthorsEntity;
 import com.bookstore.library.api.domain.entities.BooksEntity;
 import com.bookstore.library.api.mappers.Mapper;
 import com.bookstore.library.api.services.BookService;
@@ -8,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,6 +58,19 @@ public class BookController {
             BookDto bookDto = bookMapper.mapTo(booksEntity);
             return new ResponseEntity<>(bookDto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+    }
+
+    //PARTIAL UPDATE
+    @PatchMapping(path = "/books/{isbn}")
+    public ResponseEntity<BookDto> partialUpdateBook(@PathVariable("isbn") String isbn,
+                                                     @RequestBody BookDto bookDto){
+        if(!bookService.isExists(isbn)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        BooksEntity booksEntity = bookMapper.mapFrom(bookDto);
+        BooksEntity updatedBookEntity = bookService.partialUpdate(isbn, booksEntity);
+        return new ResponseEntity<>(bookMapper.mapTo(updatedBookEntity), HttpStatus.OK);
 
     }
 
