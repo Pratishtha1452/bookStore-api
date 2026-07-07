@@ -179,7 +179,16 @@ public class BookControllerIntegrationTest {
         );
     }
 
+    @Test
+    public void testThatDeleteBookDeletesExistingBookAndReturnsHttpsStatus204No_Content() throws Exception {
+        BooksEntity booksEntity = TestDataUtil.createTestBooks(null);
+        bookService.createUpdateBook(booksEntity.getIsbn(),booksEntity);
 
+        mockMvc.perform(
+                delete("/books/" + booksEntity.getIsbn())
+        ).andExpect(MockMvcResultMatchers.status().isNoContent()
+        );
+    }
 
 
 }
