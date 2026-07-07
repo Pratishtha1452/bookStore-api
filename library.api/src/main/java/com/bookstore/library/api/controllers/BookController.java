@@ -6,6 +6,8 @@ import com.bookstore.library.api.domain.entities.AuthorsEntity;
 import com.bookstore.library.api.domain.entities.BooksEntity;
 import com.bookstore.library.api.mappers.Mapper;
 import com.bookstore.library.api.services.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,10 +46,10 @@ public class BookController {
 
     //FIND ALL
     @GetMapping(path = "/books")
-    public List<BookDto> listOfBooks(){
-        List<BooksEntity> books = bookService.findAll();
+    public Page<BookDto> listOfBooks(Pageable pageable){
+        Page<BooksEntity> books = bookService.findAll(pageable);
 
-        return books.stream().map(bookMapper::mapTo).collect(Collectors.toList());
+        return books.map(bookMapper::mapTo);
     }
 
     //FIND ONE

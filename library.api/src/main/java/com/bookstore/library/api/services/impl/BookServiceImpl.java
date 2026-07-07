@@ -4,6 +4,8 @@ import com.bookstore.library.api.domain.dto.BookDto;
 import com.bookstore.library.api.domain.entities.BooksEntity;
 import com.bookstore.library.api.repositories.BookRepository;
 import com.bookstore.library.api.services.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.management.RuntimeErrorException;
@@ -31,6 +33,12 @@ public class BookServiceImpl implements BookService {
     public List<BooksEntity> findAll() {
         return StreamSupport.stream(bookRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
+
+    @Override
+    public Page<BooksEntity> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable);
+    }
+
 
     @Override
     public Optional<BooksEntity> findOne(String isbn) {
