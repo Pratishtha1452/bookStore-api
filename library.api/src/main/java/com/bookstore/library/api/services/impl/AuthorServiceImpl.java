@@ -1,6 +1,5 @@
 package com.bookstore.library.api.services.impl;
 
-import com.bookstore.library.api.domain.dto.AuthorDto;
 import com.bookstore.library.api.domain.entities.AuthorsEntity;
 import com.bookstore.library.api.repositories.AuthorRepository;
 import com.bookstore.library.api.services.AuthorService;
@@ -12,11 +11,11 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class AuthorserviceImpl implements AuthorService{
+public class AuthorServiceImpl implements AuthorService{
 
     private AuthorRepository authorRepository;
 
-    public AuthorserviceImpl(AuthorRepository authorRepository) {
+    public AuthorServiceImpl(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
 
@@ -46,7 +45,7 @@ public class AuthorserviceImpl implements AuthorService{
 
         //find if author exists -> if yes (using map)grab the object and name it existingAuthor and run the code inside curly braces
         return authorRepository.findById(id).map(existingAuthor ->{
-            //findById return an Optional since it either returns the object or null -> get the attribut
+            //findById return an Optional since it either returns the object or null -> get the attribute
             //if it is present set the value from the object
             Optional.ofNullable(authorsEntity.getName()).ifPresent(existingAuthor::setName);
             Optional.ofNullable(authorsEntity.getAge()).ifPresent(existingAuthor::setAge);
@@ -54,7 +53,7 @@ public class AuthorserviceImpl implements AuthorService{
             return authorRepository.save(existingAuthor);
 
             //just in case -> though not likely = return a runtime exception for when author does not exist
-        }).orElseThrow(() -> new RuntimeException("Author deos not exists"));
+        }).orElseThrow(() -> new RuntimeException("Author does not exists"));
     }
 
     @Override
